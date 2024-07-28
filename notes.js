@@ -12,4 +12,6 @@ const notes = [
   'G3',
 ];
 
-export default notes;
+const timings = ['1n', '2n', '4n', '8n', '16n', '32n'];
+
+export { notes, timings };

@@ -1,13 +1,18 @@
-import notes from './notes.js';
+import { notes, timings } from './notes.js';
+import { player } from './player.js';
 
 class Planet {
   constructor() {
     this.note = 'C3';
+    this.timing = '4n';
 
-    this.synthA = new Tone.FMSynth().toDestination();
     this.loopA = new Tone.Loop((time) => {
-      this.synthA.triggerAttackRelease(this.note, '16n', time);
+      player.start();
     }, '4n');
+    // this.synthA = new Tone.MonoSynth().toDestination();
+    // this.loopA = new Tone.Loop((time) => {
+    //   this.synthA.triggerAttackRelease(this.note, '32n', time);
+    // }, this.timing);
   }
 
   show = () => {
@@ -34,10 +39,8 @@ class Planet {
 
     //Change Note
     const changeNote = document.createElement('select');
-
     changeNote.setAttribute('id', 'changeNote');
     changeNote.setAttribute('name', 'changeNote');
-
     changeNote.addEventListener('change', (e) => {
       this.note = e.target.value;
     });
@@ -49,7 +52,22 @@ class Planet {
       changeNote.appendChild(option);
     }
 
-    box.append(playbtn, stopbtn, changeNote);
+    //Note Timing
+    const changeTiming = document.createElement('select');
+    changeTiming.setAttribute('id', 'changeTiming');
+    changeTiming.setAttribute('name', 'changeTiming');
+    changeTiming.addEventListener('change', (e) => {
+      this.loopA.interval = e.target.value;
+    });
+
+    for (let i = 0; i < timings.length; i++) {
+      let option = document.createElement('option');
+      option.value = timings[i];
+      option.text = timings[i];
+      changeTiming.appendChild(option);
+    }
+
+    box.append(playbtn, stopbtn, changeNote, changeTiming);
     return box;
   };
 
@@ -60,8 +78,6 @@ class Planet {
   stop = () => {
     this.loopA.stop(0);
   };
-
-  noteLength = () => {};
 }
 
 export default Planet;
